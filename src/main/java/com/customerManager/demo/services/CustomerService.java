@@ -1,8 +1,6 @@
 package com.customerManager.demo.services;
 
-
 import com.customerManager.demo.Repo.CustomerRepository;
-//import com.customerManager.demo.converter.customerConverter;
 import com.customerManager.demo.dto.CustomerDto;
 import com.customerManager.demo.entities.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +19,8 @@ public class CustomerService {
     private CustomerConverter customerConverter;
 
     public List<CustomerDto> getCustomers() {
-        List<Customer> allcustomers = (List<Customer>) custRepo.findByisActiveTrue();
-        List<CustomerDto> dtoCustomers = customerConverter.entityToDto(allcustomers);
-
-        return dtoCustomers;
+        List<Customer> allcustomers = custRepo.findByisActiveTrue();
+        return customerConverter.entityToDto(allcustomers);
 
     }
 
@@ -37,24 +33,16 @@ public class CustomerService {
     }
 
     public CustomerDto setCustomer(CustomerDto c) {
-
         Customer nc = customerConverter.DtoToEntity(c);
-//        System.out.println(nc.getLastName());
         Customer new_c = custRepo.save(nc);
-        CustomerDto new_dto = customerConverter.entityToDto(new_c);
-        return new_dto;
-
-
+        return customerConverter.entityToDto(new_c);
     }
 
     public CustomerDto updateCustomer(int id, CustomerDto c) {
         Optional<Customer> updatedBook = custRepo.findById(id);
-        if (updatedBook.isPresent()) {
-            Customer uc = customerConverter.DtoToEntity(c);
-            custRepo.save(uc);
-            return customerConverter.entityToDto(uc);
+        if (updatedBook.isPresent() && (updatedBook.get().getActive())) {
+            return customerConverter.entityToDto(custRepo.save(customerConverter.DtoToEntity(c)));
         }
-
         return null;
     }
 
@@ -62,20 +50,16 @@ public class CustomerService {
         try {
             Optional<Customer> dc = custRepo.findById(id);
             custRepo.deleteById(id);
-            CustomerDto dcdto = customerConverter.entityToDto(dc.get());
-            return dcdto;
-
+            CustomerDto cdto = customerConverter.entityToDto(dc.get());
+            return cdto;
         } catch (Exception e) {
             return null;
-
         }
     }
 
     public CustomerDto softDeleteCustomer(int id) {
-
         try {
-             Optional<Customer> dc = custRepo.findById(id);
-             Customer c = dc.get();
+             Customer c = custRepo.findById(id).get();
              c.setActive(false);
              custRepo.save(c);
             return customerConverter.entityToDto(c);

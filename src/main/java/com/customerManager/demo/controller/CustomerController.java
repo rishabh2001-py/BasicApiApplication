@@ -41,7 +41,6 @@ public class CustomerController {
     public ResponseEntity<CustomerDto> setCustomer(@RequestBody CustomerDto c){
 
         CustomerDto nc = customerService.setCustomer(c);
-        System.out.println(nc.toString());
         return ResponseEntity.of(Optional.of(nc));
 
     }
@@ -56,25 +55,19 @@ public class CustomerController {
     //Hard Delete
     @DeleteMapping("/customer/{id}")
     public ResponseEntity<CustomerDto> deleteCustomer(@PathVariable("id") int id) {
-
-        CustomerDto deletedCustomer = customerService.deleteCustomer(id);
-
-        if (deletedCustomer == null) {
+        CustomerDto customerDto = customerService.deleteCustomer(id);
+        if (customerDto== null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.of(Optional.of(deletedCustomer));
-
+        return ResponseEntity.of(Optional.of(customerDto));
     }
 
     @PutMapping ("/customer/soft/{id}")
     public ResponseEntity<CustomerDto> SoftdeleteCustomer(@PathVariable("id") int id) {
-
-        CustomerDto deletedCustomer = customerService.softDeleteCustomer(id);
-
-        if (deletedCustomer == null) {
+        if (customerService.softDeleteCustomer(id) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.of(Optional.of(deletedCustomer));
+        return ResponseEntity.of(Optional.of(customerService.softDeleteCustomer(id)));
 
     }
 
