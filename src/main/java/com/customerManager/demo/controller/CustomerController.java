@@ -1,25 +1,23 @@
 package com.customerManager.demo.controller;
 
-import com.customerManager.demo.dto.customerDto;
-import com.customerManager.demo.entities.customer;
-import com.customerManager.demo.services.customerService;
+import com.customerManager.demo.dto.CustomerDto;
+import com.customerManager.demo.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.customerManager.demo.services.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class customerController {
+public class CustomerController {
     @Autowired
-    private customerService customerService;
+    private CustomerService customerService;
 
     @GetMapping("/customers")
-    public ResponseEntity<List<customerDto>> getCustomer(){
-        List<customerDto> customer = customerService.getCustomers();
+    public ResponseEntity<List<CustomerDto>> getCustomer(){
+        List<CustomerDto> customer = customerService.getCustomers();
         if(customer.size() == 0){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
@@ -27,10 +25,10 @@ public class customerController {
     }
 
     @GetMapping("/customer/{id}")
-    public ResponseEntity<customerDto> getCustomer(@PathVariable("id") int id) {
+    public ResponseEntity<CustomerDto> getCustomer(@PathVariable("id") int id) {
 
         try {
-            customerDto c = customerService.getCustomerById(id);
+            CustomerDto c = customerService.getCustomerById(id);
             System.out.println(c.getUserId());
             return ResponseEntity.of(Optional.of(c));
         }
@@ -40,17 +38,15 @@ public class customerController {
     }
 
     @PostMapping("/customer")
-    public ResponseEntity<customerDto> setCustomer(@RequestBody customerDto c){
+    public ResponseEntity<CustomerDto> setCustomer(@RequestBody CustomerDto c){
 
-        System.out.println(c.toString());
-
-        customerDto nc = customerService.setCustomer(c);
+        CustomerDto nc = customerService.setCustomer(c);
         System.out.println(nc.toString());
         return ResponseEntity.of(Optional.of(nc));
 
     }
     @PutMapping("/customer/{id}")
-    public ResponseEntity<customerDto> updateBook(@PathVariable("id") int id , @RequestBody customerDto c) {
+    public ResponseEntity<CustomerDto> updateBook(@PathVariable("id") int id , @RequestBody CustomerDto c) {
         if (customerService.updateCustomer(id, c) == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -59,9 +55,9 @@ public class customerController {
     }
     //Hard Delete
     @DeleteMapping("/customer/{id}")
-    public ResponseEntity<customerDto> deleteCustomer(@PathVariable("id") int id) {
+    public ResponseEntity<CustomerDto> deleteCustomer(@PathVariable("id") int id) {
 
-        customerDto deletedCustomer = customerService.deleteCustomer(id);
+        CustomerDto deletedCustomer = customerService.deleteCustomer(id);
 
         if (deletedCustomer == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -70,10 +66,10 @@ public class customerController {
 
     }
 
-    @DeleteMapping("/customer/soft/{id}")
-    public ResponseEntity<customerDto> SoftdeleteCustomer(@PathVariable("id") int id) {
+    @PutMapping ("/customer/soft/{id}")
+    public ResponseEntity<CustomerDto> SoftdeleteCustomer(@PathVariable("id") int id) {
 
-        customerDto deletedCustomer = customerService.SoftdeleteCustomer(id);
+        CustomerDto deletedCustomer = customerService.softDeleteCustomer(id);
 
         if (deletedCustomer == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

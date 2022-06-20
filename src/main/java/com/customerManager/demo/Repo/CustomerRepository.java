@@ -1,14 +1,16 @@
 package com.customerManager.demo.Repo;
-import com.customerManager.demo.entities.customer;
-import org.springframework.data.jpa.repository.Query;
+import com.customerManager.demo.entities.Customer;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-@Component
-public interface CustomerRepository extends CrudRepository<customer, Integer> {
 
-    List<customer> findByisActiveTrue();
+@Repository
+public interface CustomerRepository extends CrudRepository<Customer, Integer> {
+
+    List<Customer> findByisActiveTrue();
+
 
 }

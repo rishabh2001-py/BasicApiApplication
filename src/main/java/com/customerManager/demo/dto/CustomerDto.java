@@ -4,11 +4,11 @@ package com.customerManager.demo.dto;
 import org.springframework.stereotype.Component;
 
 @Component
-public class customerDto {
+public class CustomerDto {
 
         private int userId;
         private String firstName;
-        private String lastName;
+//        private String lastName;
         private int age;
         private char gender;
 
@@ -30,13 +30,13 @@ public class customerDto {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
+//    public String getLastName() {
+//        return lastName;
+//    }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+//    public void setLastName(String lastName) {
+//        this.lastName = lastName;
+//    }
 
     public int getAge() {
         return age;
@@ -59,7 +59,7 @@ public class customerDto {
         return "customerDto{" +
                 "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+//                ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
                 '}';
